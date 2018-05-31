@@ -22,7 +22,6 @@ class CallableGeneratorTest(unittest.TestCase):
         t = CallableGeneratorTest.Temp()
 
         node = Node(None, None)
-        node.value = t
         n1 = node.Define()
         n2 = node.Filter().Filter()
         n4 = n2.Count()
@@ -42,7 +41,6 @@ class CallableGeneratorTest(unittest.TestCase):
         t = CallableGeneratorTest.Temp()
 
         node = Node(None, None)
-        node.value = t
         n1 = node.Define()
         n2 = node.Filter().Filter()
         n4 = n2.Count()
