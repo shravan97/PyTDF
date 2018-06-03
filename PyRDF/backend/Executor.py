@@ -12,7 +12,7 @@ class Executor(object):
             return "local"
         return env
 
-    def execute(self, generator):
+    def execute(self, generator, env="local", conf={}):
         """
         Method to execute the 
         event-loop from the root
@@ -20,9 +20,6 @@ class Executor(object):
         environment
 
         """
-
-        import os
-        env = os.environ.get('PYTDF_ENV')
 
         if not env or (env == "local"):
             from .Local import local_executor
