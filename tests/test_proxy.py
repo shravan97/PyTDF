@@ -10,16 +10,16 @@ class AttrReadTest(unittest.TestCase):
     def test_attr_simple(self):
         # Write a new class again
         node = Node(None, None)
-        proxy = Proxy(node)
-        func = proxy.attr
+        proxy_object = proxy(node)
+        func = proxy_object.attr
 
-        self.assertEqual(proxy._cur_attr, "attr")
+        self.assertEqual(proxy_object._cur_attr, "attr")
 
     def test_return_value(self):
 
         t = AttrReadTest.Temp()
         node = Node(None, None)
         node.value = t
-        proxy = Proxy(node)
+        proxy_object = proxy(node)
 
-        self.assertEqual(proxy.val(21), 144)
+        self.assertEqual(proxy_object.val(21), 144)
