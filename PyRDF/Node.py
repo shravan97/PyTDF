@@ -36,24 +36,6 @@ class Node(object):
 
         return newNode
     
-    def _dfs(self, node, prev_object= None):
-        """
-        Do a depth-first traversal of the graph from the root
-
-        """
-        if not node.operation:
-            prev_object = node._tdf
-            self._graph_prune()
-
-        else:
-            ## Execution of the node
-            op = getattr(prev_object, node.operation.name)
-            node.value = op(*node.operation.args, **node.operation.kwargs)
-        
-        for n in node.next_nodes:
-            self._dfs(n, node.value)
-
-    
     def _graph_prune(self):
 
         children = []
@@ -77,6 +59,13 @@ class Node(object):
             ### NOTE :- sys.getrefcount(node) gives a way higher value and hence
             ### doesn't work in this case
             
+            return False
+
+        elif self.operation and not self.next_nodes and (self.operation.op_type == Operation.Types.TRANSFORMATION):
+
+            ### If the current node is a leaf and 
+            ### a transformation node, then prune it
+
             return False
 
         return True
