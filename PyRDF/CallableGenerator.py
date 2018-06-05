@@ -24,7 +24,7 @@ class CallableGenerator(object):
                 self._dfs(n)
             return
 
-        if node.operation.op_type == Operation.Types.ACTION:
+        if node.operation.is_action():
             self.actions+=1
             
             ops_copy.append(node.operation)
@@ -69,7 +69,7 @@ class CallableGenerator(object):
                 node = self.root_node
             else:
                 t = getattr(t, node.operation.name)(*node.operation.args, **node.operation.kwargs)
-                if node.operation.op_type==Operation.Types.ACTION:
+                if node.operation.is_action():
                     return_vals.append(t)
                     return_nodes.append(node)
 

@@ -31,7 +31,7 @@ class Node(object):
         newNode = Node(operation=op, _get_head=self._get_head)
         self.next_nodes.append(newNode)
 
-        if op.op_type == Operation.Types.ACTION:
+        if op.is_action():
             return Proxy(newNode)
 
         return newNode
@@ -61,7 +61,7 @@ class Node(object):
             
             return False
 
-        elif self.operation and not self.next_nodes and (self.operation.op_type == Operation.Types.TRANSFORMATION):
+        elif self.operation and not self.next_nodes and not self.operation.is_action():
 
             ### If the current node is a leaf and 
             ### a transformation node, then prune it

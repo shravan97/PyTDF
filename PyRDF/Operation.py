@@ -17,6 +17,9 @@ class Operation(object):
         self.kwargs = kwargs
         self.op_type = self._classify_operation(name)
 
+    def is_action(self):
+        return self.op_type == Operation.Types.ACTION
+
     def _classify_operation(self, name):
         """
         Method to classify the given
