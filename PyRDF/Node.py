@@ -31,42 +31,24 @@ class Node(object):
         newNode = Node(operation=op, _get_head=self._get_head)
         self.next_nodes.append(newNode)
 
-        if op.op_type == Operation.Types.ACTION:
+        if op.is_action():
             return Proxy(newNode)
 
         return newNode
     
-    def _dfs(self, node, prev_object= None):
-        """
-        Do a depth-first traversal of the graph from the root
-
-        """
-        if not node.operation:
-            prev_object = node._tdf
-            self._graph_prune()
-
-        else:
-            ## Execution of the node
-            op = getattr(prev_object, node.operation.name)
-            node.value = op(*node.operation.args, **node.operation.kwargs)
-        
-        for n in node.next_nodes:
-            self._dfs(n, node.value)
-
-    
-    def _graph_prune(self):
+    def graph_prune(self):
 
         children = []
 
         for n in self.next_nodes:
-            if n._graph_prune():
+            if n.graph_prune():
                 children.append(n)
         self.next_nodes = children
 
         if not self.next_nodes and len(gc.get_referrers(self)) <= 3:
             
             ### The 3 referrers to the current node would be :
-            ### - The current function (_graph_prune())
+            ### - The current function (graph_prune())
             ### - An internal reference (which every Python object has)
             ### - The current node's parent node
             ###
@@ -77,6 +59,13 @@ class Node(object):
             ### NOTE :- sys.getrefcount(node) gives a way higher value and hence
             ### doesn't work in this case
             
+            return False
+
+        elif self.operation and not self.next_nodes and not self.operation.is_action():
+
+            ### If the current node is a leaf and 
+            ### a transformation node, then prune it
+
             return False
 
         return True

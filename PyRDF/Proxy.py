@@ -2,6 +2,9 @@ from __future__ import print_function
 from .backend import Executor
 from .CallableGenerator import CallableGenerator
 
+Backend_env = "local"
+Backend_conf = {}
+
 class Proxy(object):
     """
     Proxy provides an interface 
@@ -25,6 +28,6 @@ class Proxy(object):
         if not self.action_node.value:
             generator = CallableGenerator(self.action_node._get_head())
             executor = Executor()
-            executor.execute(generator)
+            executor.execute(generator, Backend_env, Backend_conf)
 
         return getattr(self.action_node.value, self._cur_attr)(*args, **kwargs)

@@ -18,11 +18,10 @@ class CallableGeneratorTest(unittest.TestCase):
             self.ord_list.append(3)
             return self
 
-    def test_mapper_from_graph(self):
+    def test_mapper_without_pruning(self):
         t = CallableGeneratorTest.Temp()
 
         node = Node(None, None)
-        node.value = t
         n1 = node.Define()
         n2 = node.Filter().Filter()
         n4 = n2.Count()
@@ -31,18 +30,18 @@ class CallableGeneratorTest(unittest.TestCase):
 
         mp = CallableGenerator(node)
         mapper_func = mp.get_callable()
-        actions = mapper_func(t)
+        output = mapper_func(t)
 
-        reqd_order = [1, 3, 2, 2, 3, 2]
+        reqd_order = [1, 3, 2, 2, 3]
 
         self.assertEqual(t.ord_list, reqd_order)
-        self.assertEqual(list(actions.keys()), ['ta1', 'ta2'])
+        self.assertListEqual(output[1], [n5.action_node, n4.action_node])
+        self.assertListEqual(output[0], [t, t])
 
     def test_mapper_with_pruning(self):
         t = CallableGeneratorTest.Temp()
 
         node = Node(None, None)
-        node.value = t
         n1 = node.Define()
         n2 = node.Filter().Filter()
         n4 = n2.Count()
@@ -53,9 +52,10 @@ class CallableGeneratorTest(unittest.TestCase):
 
         mp = CallableGenerator(node)
         mapper_func = mp.get_callable()
-        actions = mapper_func(t)
+        output = mapper_func(t)
 
-        reqd_order = [1, 2, 2, 2, 3, 2]
+        reqd_order = [2, 2, 3]
 
         self.assertEqual(t.ord_list, reqd_order)
-        self.assertEqual(list(actions.keys()), ['ta1'])
+        self.assertListEqual(output[1], [n4.action_node])
+        self.assertListEqual(output[0], [t])
