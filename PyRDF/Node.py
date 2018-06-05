@@ -36,19 +36,19 @@ class Node(object):
 
         return newNode
     
-    def _graph_prune(self):
+    def graph_prune(self):
 
         children = []
 
         for n in self.next_nodes:
-            if n._graph_prune():
+            if n.graph_prune():
                 children.append(n)
         self.next_nodes = children
 
         if not self.next_nodes and len(gc.get_referrers(self)) <= 3:
             
             ### The 3 referrers to the current node would be :
-            ### - The current function (_graph_prune())
+            ### - The current function (graph_prune())
             ### - An internal reference (which every Python object has)
             ### - The current node's parent node
             ###

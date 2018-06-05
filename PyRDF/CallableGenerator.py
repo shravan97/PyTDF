@@ -59,7 +59,7 @@ class CallableGenerator(object):
 
         """
 
-        self.root_node._graph_prune()
+        self.root_node.graph_prune()
 
         def mapper(t, node=None, return_vals=[], return_nodes=[]):
             ## TODO : Somehow remove references to any Node object 

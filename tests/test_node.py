@@ -52,7 +52,7 @@ class DfsTest(unittest.TestCase):
         if not node.operation:
             prev_object = DfsTest.Temp()
             node.value = prev_object
-            node._graph_prune()
+            node.graph_prune()
 
         else:
             ## Execution of the node
